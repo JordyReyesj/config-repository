@@ -1,0 +1,38 @@
+server:
+  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8091/eureka/
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: customerdomain
+          uri: lb://customerdomain/
+          predicates:
+            - Path=/api/customer/**
+        - id: productdomain
+          uri: lb://productdomain/
+          predicates:
+            - Path=/api/product/**
+        - id: registerproductdomain
+          uri: lb://registerproductdomain/
+          predicates:
+            - Path=/api/register/**
+        - id: transactiondomain
+          uri: lb://transactiondomain/
+          predicates:
+            - Path=/api/transaction/**
+        - id: reporttransactiondomain
+          uri: lb://reporttransactiondomain/
+          predicates:
+            - Path=/api/report/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
